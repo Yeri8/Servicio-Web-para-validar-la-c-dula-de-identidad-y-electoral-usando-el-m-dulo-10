@@ -1,25 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">  <!-- Agregamos el idioma -->
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8">  <!-- Mantiene codificación correcta -->
-    
-    <!-- Agregamos el meta viewport para compatibilidad en móviles -->
+    <meta charset="UTF-8" />
+    <title>Validar Cédula</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Título del documento (NECESARIO) -->
-    <title>Mi Página Web</title>
-
-    <!-- Si tienes un CSS, déjalo así -->
     <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <!-- Contenido de tu página -->
-    <h1>Bienvenido a mi página</h1>
-    <p>Todo está corregido para accesibilidad y compatibilidad.</p>
-</body>
+    <h1>Validar Cédula</h1>
 
+    <input type="text" id="cedula" placeholder="Ejemplo: 40200700675">
+    <button onclick="validarLocal()">Validar (Local)</button>
+    <button onclick="validarServicio()">Validar (Servicio)</button>
+    <p id="resultado"></p>
+
+    <script src="script.js"></script>
+</body>
 </html>
+
 
 
