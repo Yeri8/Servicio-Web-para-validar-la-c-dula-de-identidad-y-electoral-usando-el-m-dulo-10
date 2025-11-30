@@ -1,7 +1,11 @@
 {
-  "name":"cedula-validator-service-finalui",
-  "version":"1.0.0",
-  "main":"server.js",
-  "scripts":{"start":"node server.js","test":"node run_validator_test.js"},
-  "dependencies":{"express":"^4.18.2"}
+  "name": "cedula-validator",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
