@@ -6,7 +6,7 @@ const validator = require("./module10-validator");
 const app = express();
 app.use(express.json());
 
-// Servir archivos estáticos (index.html)
+// Sirve la carpeta public
 app.use(express.static(path.join(__dirname, "public")));
 
 // Página principal
@@ -14,22 +14,16 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Ruta API GET
+// Ruta GET para API
 app.get("/validar/:cedula", (req, res) => {
     const cedula = req.params.cedula;
     const resultado = validator(cedula);
     res.json(resultado);
 });
 
-// API POST (opcional)
-app.post("/api/validate", (req, res) => {
-    const cedula = req.body.cedula;
-    const resultado = validator(cedula);
-    res.json(resultado);
-});
-
-// Puerto para Render (importante)
+// Puerto para Render
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en puerto ${PORT}`);
 });
+
