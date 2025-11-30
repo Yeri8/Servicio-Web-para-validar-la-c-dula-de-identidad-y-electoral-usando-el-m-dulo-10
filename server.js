@@ -1,39 +1,50 @@
+// server.js
 const express = require("express");
 const path = require("path");
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware para JSON (por si usas POST)
 app.use(express.json());
 
-// Ruta estática → Render sí sirve index.html
+// Servir carpeta PUBLIC automáticamente
 app.use(express.static(path.join(__dirname, "public")));
 
-// Algoritmo módulo 10
+// Ruta principal → enviar index.html
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Validar cédula (servicio web)
+app.get("/validar/:cedula", (req, res) => {
+  const cedula = req.params.cedula;
+
+  if (validarCedula(cedula)) {
+    res.json({ cedula, valida: true, mensaje: "CÉDULA CORRECTA" });
+  } else {
+    res.json({ cedula, valida: false, mensaje: "CÉDULA INCORRECTA" });
+  }
+});
+
+// Función de validación (módulo 10)
 function validarCedula(cedula) {
-  cedula = cedula.replace(/-/g, "").trim();
-  if (!/^\d{11}$/.test(cedula)) return false;
+  cedula = cedula.replace(/-/g, "");
+  if (cedula.length !== 11) return false;
 
   let suma = 0;
-  for (let i = 0; i < 10; i++) {
-    let multiplicador = (i % 2 === 0) ? 1 : 2;
-    let resultado = parseInt(cedula[i]) * multiplicador;
-    if (resultado > 9) resultado = Math.floor(resultado / 10) + (resultado % 10);
-    suma += resultado;
+  let multiplicadores = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1];
+
+  for (let i = 0; i < 11; i++) {
+    let digito = parseInt(cedula[i]) * multiplicadores[i];
+    if (digito > 9) digito -= 9;
+    suma += digito;
   }
-  let ultimoDigito = parseInt(cedula[10]);
-  return ((10 - (suma % 10)) % 10) === ultimoDigito;
+
+  return suma % 10 === 0;
 }
 
-// Endpoint
-app.get("/api/validate", (req, res) => {
-  const cedula = req.query.cedula;
-  res.json({
-    cedula,
-    valida: validarCedula(cedula)
-  });
+app.listen(PORT, () => {
+  console.log(`Servidor activo en puerto ${PORT}`);
 });
 
-// Render requiere esto 👇
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en puerto ${PORT}`);
-});
 
