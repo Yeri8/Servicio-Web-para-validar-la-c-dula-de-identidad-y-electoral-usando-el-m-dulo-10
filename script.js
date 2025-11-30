@@ -1,75 +1,83 @@
-// Cargar secciones dinámicamente
-const main = document.getElementById('main');
-const navButtons = document.querySelectorAll('.nav button');
+document.addEventListener('DOMContentLoaded', () => {
+  loadSection('home');
+
+  document.querySelectorAll('.nav button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      loadSection(btn.dataset.section);
+    });
+  });
+});
 
 function loadSection(section) {
-  navButtons.forEach(b => b.classList.remove('active'));
-  document.querySelector(`[data-section="${section}"]`).classList.add('active');
-
-  if (section === "home") {
+  const main = document.getElementById('main');
+  if (section === 'home') {
     main.innerHTML = `
-      <div class="card">
-        <h2>Bienvenido al Servicio Web</h2>
-        <p>Este sistema valida cédulas dominicanas usando el <b>algoritmo Módulo 10</b>.</p>
-      </div>`;
-  }
-
-  else if (section === "validate") {
+      <div class="card"><h2>Bienvenido</h2>
+      <p>Servicio Web para validar cédulas usando el algoritmo Módulo 10. Usa la sección <strong>Validar</strong> para probar.</p></div>`;
+  } else if (section === 'validate') {
     main.innerHTML = `
       <div class="card">
         <h2>Validar Cédula</h2>
-        <div class="row">
-          <input id="cedulaInput" type="text" placeholder="Ingresa la cédula (11 dígitos)" maxlength="11"/>
-          <button class="btn" id="btnValidate">Validar</button>
+        <p>Introduce la cédula (con o sin guiones). La validación puede hacerse localmente o mediante el servicio.</p>
+        <div class="row" style="margin-top:12px">
+          <input type="text" id="cedInput" placeholder="Ej: 001-1377777-2" />
+          <button class="btn" id="localBtn">Validar (local)</button>
         </div>
-        <div id="result" class="result"></div>
-      </div>
-    `;
-
-    document.getElementById("btnValidate").addEventListener("click", () => {
-      const value = document.getElementById("cedulaInput").value;
-      const result = document.getElementById("result");
-
-      if (value.length !== 11) {
-        result.textContent = "Debe tener 11 dígitos.";
-        result.className = "result bad";
-        return;
-      }
-
-      if (validateCedula(value)) {
-        result.textContent = "Cédula válida ✔️";
-        result.className = "result ok";
+        <div class="row" style="margin-top:10px">
+          <button class="btn ghost" id="serviceBtn">Validar (servicio)</button>
+          <button class="btn ghost" id="clearBtn">Limpiar</button>
+        </div>
+        <div id="result" class="result" aria-live="polite"></div>
+      </div>`;
+    document.getElementById('localBtn').addEventListener('click', ()=> {
+      const v = document.getElementById('cedInput').value;
+      if (typeof module10Validate === 'function') {
+        const r = module10Validate(v);
+        showResult(r);
       } else {
-        result.textContent = "Cédula NO válida ✖️";
-        result.className = "result bad";
+        document.getElementById('result').textContent = 'Validación local no disponible';
       }
     });
-  }
-
-  else if (section === "examples") {
-    main.innerHTML = `
-      <div class="card">
-        <h2>Cédulas de ejemplo</h2>
-        <ul class="examples">
-          <li>00113918205 ✔️</li>
-          <li>40200700643 ✔️</li>
-          <li>00113918206 ✖️</li>
-        </ul>
-      </div>`;
-  }
-
-  else if (section === "notes") {
-    main.innerHTML = `
-      <div class="card">
-        <h2>Notas</h2>
-        <p>Este proyecto es académico y demuestra el uso del <b>Módulo 10</b>.</p>
-      </div>`;
+    document.getElementById('serviceBtn').addEventListener('click', async ()=> {
+      const v = document.getElementById('cedInput').value;
+      try {
+        const q = '/api/validate?cedula=' + encodeURIComponent(v);
+        const res = await fetch(q);
+        if (!res.ok) {
+          document.getElementById('result').textContent = 'Error del servicio: ' + res.status;
+          return;
+        }
+        const json = await res.json();
+        showResult(json);
+      } catch (e) {
+        document.getElementById('result').textContent = 'Error conectando al servicio: ' + e.message;
+      }
+    });
+    document.getElementById('clearBtn').addEventListener('click', ()=> {
+      document.getElementById('cedInput').value = '';
+      document.getElementById('result').textContent = '';
+    });
+  } else if (section === 'examples') {
+    main.innerHTML = `<div class="card"><h2>Ejemplos</h2>
+      <ul class="examples">
+        <li>79927398713 — ejemplo Luhn válido</li>
+        <li>001-1377777-2 — formato RD (prueba)</li>
+      </ul></div>`;
+  } else if (section === 'notes') {
+    main.innerHTML = `<div class="card"><h2>Notas</h2>
+      <ul><li>El servicio aplica Módulo 10 y devuelve mensaje en español.</li>
+      <li>La verificación local usa el mismo código (archivo module10-validator.js).</li></ul></div>`;
   }
 }
 
-navButtons.forEach(button => {
-  button.addEventListener('click', () => loadSection(button.dataset.section));
-});
+function showResult(r) {
+  const el = document.getElementById('result');
+  if (!r) { el.textContent = 'Error'; return; }
+  const valid = !!r.valid || !!r.valida;
+  const msg = r.message || (valid ? 'CÉDULA ES CORRECTA' : 'CÉDULA ES INCORRECTA');
+  el.textContent = msg;
+  el.className = 'result ' + (valid ? 'ok' : 'bad');
+}
 
-// Cargar inicio por defecto
-loadSection("home");
