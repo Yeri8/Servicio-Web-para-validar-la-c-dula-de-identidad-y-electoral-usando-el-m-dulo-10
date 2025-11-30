@@ -20,15 +20,13 @@ body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);c
 .brand h1{margin:0;font-size:18px}
 .muted{margin:0;color:var(--card);opacity:0.95;font-size:13px}
 .nav button{background:transparent;border:0;color:rgba(255,255,255,0.95);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
-.nav button.active{background:rgba(255,255,255,0.15)}
-
+.nav button.active{background:rgba(255,255,255,0.12)}
 .container{max-width:var(--maxw);margin:28px auto;padding:0 16px}
 .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
 input[type="text"]{width:100%;padding:12px;border-radius:10px;border:1px solid #e6eef0;font-size:15px}
 .row{display:flex;gap:12px;align-items:center}
 .btn{background:var(--gold-2);color:white;border:0;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
 .btn.ghost{background:#f3f4f6;color:#0f172a;border:1px solid #e6eef0}
-
 .result{margin-top:12px;font-weight:700}
 .result.ok{color:var(--ok)}
 .result.bad{color:var(--bad)}
