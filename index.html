@@ -1,42 +1,38 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Validador de Cédula RD</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo">JCE</div>
-        <div>
-          <h1>Validador de Cédula RD</h1>
-          <div class="meta">Servicio Web · Algoritmo Módulo 10</div>
-        </div>
-      </div>
-    </header>
-
-    <div class="layout">
-      <div class="card form-card">
-        <h2>Validar Cédula</h2>
-        <input type="text" id="cedula" placeholder="Introduce la cédula (con o sin guiones)">
-        
-        <div class="actions">
-          <button class="btn btn-primary" onclick="validarLocal()">Validar (local)</button>
-          <button class="btn btn-ghost" onclick="validarServicio()">Validar (servicio)</button>
-          <button class="btn" onclick="limpiar()">Limpiar</button>
-        </div>
-
-        <p id="resultado" class="small"></p>
-      </div>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">JCE</div>
+      <h1>Validador de Cédula RD</h1>
     </div>
+  </header>
 
-    <footer class="small">
-      © 2025 Validador de Cédula Dominicana — Proyecto Académico.
-    </footer>
-  </div>
+  <main class="wrap">
+    <div class="card form-card">
+      <h2>Validar Cédula</h2>
+
+      <label for="cedula">Introduce la cédula:</label>
+      <input type="text" id="cedula" placeholder="000-0000000-0" />
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="validarLocal()">Validar (local)</button>
+        <button class="btn btn-ghost" onclick="limpiar()">Limpiar</button>
+      </div>
+
+      <p id="resultado" class="small"></p>
+    </div>
+  </main>
+
+  <footer class="small" style="text-align:center;margin-top:40px;">
+    © 2025 Validación de Cédula Dominicana · Proyecto Académico.
+  </footer>
 
   <script src="script.js"></script>
 </body>
