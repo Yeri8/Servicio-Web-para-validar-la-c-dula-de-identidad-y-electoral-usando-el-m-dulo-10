@@ -1,28 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Validar Cédula</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Validador de Cédula — Servicio Web</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="logo">JCE</div>
+        <div>
+          <h1>Validador de Cédula RD</h1>
+          <p class="muted">Servicio Web · Algoritmo Módulo 10</p>
+        </div>
+      </div>
+      <nav class="nav">
+        <button data-section="home" class="active">Inicio</button>
+        <button data-section="validate">Validar</button>
+        <button data-section="examples">Ejemplos</button>
+        <button data-section="notes">Notas</button>
+      </nav>
+    </div>
+  </header>
 
-<div class="card">
-    <h2>Validar Cédula</h2>
-    <p>Introduce la cédula (con o sin guiones).</p>
+  <main id="main" class="container"></main>
 
-    <input id="cedula" placeholder="00112345678">
+  <footer class="footer">© 2025 Validador de Cédula Dominicana — Proyecto Académico.</footer>
 
-    <button onclick="validarLocal()">Validar (local)</button>
-    <button onclick="validarServicio()">Validar (servicio)</button>
-    <button onclick="limpiar()">Limpiar</button>
-
-    <p id="resultado"></p>
-</div>
-
-<script src="validator.js"></script>
-<script src="script.js"></script>
-
+  <!-- Carga del validador cliente (asegúrate de que public/module10-validator.js exista) -->
+  <script src="module10-validator.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
-
